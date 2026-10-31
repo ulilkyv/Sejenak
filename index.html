@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#081326">
+<meta name="description" content="SEJENAK — ruang untuk berhenti, berpikir, dan bertumbuh.">
+<title>SEJENAK — Ruang untuk Bertumbuh</title>
+<style>
+:root{--bg:#071326;--panel:rgba(19,31,57,.72);--line:rgba(255,255,255,.15);--text:#f5f5ff;--muted:#c4c9da;--gold:#ffd99a;--blue:#a8c8ff;--shadow:0 20px 60px rgba(0,0,0,.25)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.6}
+body.light{--bg:#edf2fb;--panel:rgba(255,255,255,.78);--line:rgba(20,35,65,.14);--text:#17213a;--muted:#526079;--shadow:0 20px 60px rgba(40,60,100,.12)}
+a{color:inherit;text-decoration:none}button{font:inherit;cursor:pointer}.wrap{width:min(1120px,92%);margin:auto}
+header{position:absolute;z-index:5;top:0;left:0;width:100%;border-bottom:1px solid rgba(255,255,255,.1)}
+.nav{height:76px;display:flex;align-items:center;justify-content:space-between;gap:20px}.brand{font-weight:850;letter-spacing:.16em;font-size:1.15rem}.brand span{color:var(--gold);font-size:1.5rem;margin-right:8px}
+.links{display:flex;gap:24px;color:#f2f3fa;font-size:.92rem}.links a:hover{color:var(--gold)}.nav-actions{display:flex;gap:10px}.icon-btn{border:1px solid var(--line);background:var(--panel);color:var(--text);border-radius:50px;padding:8px 12px}
+.hero{min-height:740px;position:relative;display:flex;align-items:center;overflow:hidden;background:linear-gradient(90deg,rgba(4,13,30,.88),rgba(4,13,30,.25)),url('hero-sejenak.png') center/cover no-repeat}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,var(--bg),transparent 36%);pointer-events:none}.hero-content{position:relative;z-index:1;padding:130px 0 110px;max-width:720px}
+.eyebrow{display:inline-flex;gap:9px;align-items:center;border:1px solid var(--line);background:rgba(20,32,60,.58);padding:8px 14px;border-radius:99px;color:#e7eaff;font-size:.86rem;backdrop-filter:blur(10px)}
+h1{font-size:clamp(3.7rem,10vw,7.4rem);line-height:.95;letter-spacing:-.065em;margin:25px 0 18px;font-weight:900}.shine{background:linear-gradient(100deg,#fff 15%,#ffd89a 55%,#a9c8ff);color:transparent;background-clip:text}
+.lead{font-size:clamp(1.05rem,2vw,1.35rem);color:#e1e5f3;max-width:650px}.sublead{color:#c5cbe0;max-width:600px}
+.primary{display:inline-flex;align-items:center;gap:12px;background:linear-gradient(110deg,#ffe6b6,#b7ceff);color:#10182b;font-weight:800;border:0;border-radius:99px;padding:13px 22px;margin-top:18px;box-shadow:0 10px 35px rgba(180,197,255,.2);transition:transform .2s}.primary:hover{transform:translateY(-3px)}
+section{padding:76px 0}.section-kicker{color:var(--gold);text-transform:uppercase;letter-spacing:.18em;font-size:.75rem;font-weight:800}.section-title{font-size:clamp(2rem,4vw,3rem);line-height:1.1;margin:8px 0 12px}.muted{color:var(--muted)}
+.daily{display:grid;grid-template-columns:1fr auto;gap:20px;align-items:center;padding:26px;border:1px solid var(--line);border-radius:24px;background:var(--panel);backdrop-filter:blur(16px);box-shadow:var(--shadow)}
+.quote{font-size:clamp(1.2rem,2.4vw,1.8rem);line-height:1.45;margin:8px 0 12px}.small-btn{border:1px solid var(--line);background:rgba(255,255,255,.07);color:var(--text);padding:10px 15px;border-radius:99px}.small-btn:hover{border-color:var(--gold)}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:28px}.tile{padding:23px;border:1px solid var(--line);border-radius:22px;background:var(--panel);backdrop-filter:blur(12px);min-height:190px;transition:transform .2s,border-color .2s}.tile:hover{transform:translateY(-5px);border-color:rgba(255,217,154,.6)}.tile .emoji{font-size:1.7rem}.tile h3{margin:10px 0 5px}.tile p{margin:0;color:var(--muted)}
+.reflection{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:start}.prompt-box{border:1px solid var(--line);border-radius:22px;padding:22px;background:var(--panel)}textarea{width:100%;min-height:130px;resize:vertical;border:1px solid var(--line);border-radius:14px;padding:13px;background:rgba(0,0,0,.12);color:var(--text);font:inherit;margin:12px 0}
+.letter{border:1px solid var(--line);border-radius:22px;padding:24px;background:linear-gradient(145deg,rgba(80,105,160,.22),var(--panel));}
+footer{padding:30px 0 45px;border-top:1px solid var(--line);color:var(--muted);font-size:.9rem}.footer-row{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.toast{position:fixed;bottom:22px;left:50%;transform:translate(-50%,20px);opacity:0;pointer-events:none;background:#f8e3bc;color:#182038;padding:11px 18px;border-radius:99px;font-weight:700;transition:.25s;z-index:10}.toast.show{opacity:1;transform:translate(-50%,0)}
+@media(max-width:760px){.links{display:none}.hero{min-height:690px;background-position:58% center}.hero-content{padding-top:120px}.daily{grid-template-columns:1fr}.grid{grid-template-columns:1fr}.reflection{grid-template-columns:1fr}.nav{height:66px}}
+</style>
+</head>
+<body>
+<header><div class="wrap nav">
+  <a class="brand" href="#"><span>✦</span>SEJENAK</a>
+  <nav class="links"><a href="#inspirasi">Inspirasi</a><a href="#ruang">Jelajahi</a><a href="#renungan">Renungan</a></nav>
+  <div class="nav-actions"><button class="icon-btn" id="themeBtn" aria-label="Ganti tema">☾</button></div>
+</div></header>
+<main>
+<section class="hero">
+  <div class="wrap hero-content">
+    <div class="eyebrow">✧ Sebuah ruang untuk berhenti sejenak</div>
+    <h1 class="shine">SEJENAK.</h1>
+    <p class="lead">Temukan makna, rayakan proses, dan lanjutkan langkah.</p>
+    <p class="sublead">Di tengah hiruk-pikuk dunia, luangkan sedikit waktu untuk mendengarkan pikiran, memahami perasaan, dan menemukan sudut pandang baru.</p>
+    <a class="primary" href="#inspirasi">Mulai sekarang <span>↗</span></a>
+  </div>
+</section>
+
+<section id="inspirasi"><div class="wrap">
+  <div class="section-kicker">01 / jeda hari ini</div>
+  <h2 class="section-title">Satu menit untuk dirimu.</h2>
+  <p class="muted">Tidak perlu terburu-buru. Baca, resapi, lalu ambil hal baik yang bisa kamu bawa.</p>
+  <div class="daily">
+    <div><div class="muted">✦ INSPIRASI HARI INI</div><p class="quote" id="quote">“Langkah kecil yang kamu lakukan hari ini tetap berarti, meski belum terlihat hasilnya.”</p><div class="muted" id="author">— SEJENAK</div></div>
+    <div style="display:flex;gap:9px;flex-wrap:wrap"><button class="small-btn" id="newQuote">Inspirasi lain ↻</button><button class="small-btn" id="copyQuote">Salin kutipan</button></div>
+  </div>
+</div></section>
+
+<section id="ruang"><div class="wrap">
+  <div class="section-kicker">02 / jelajahi ruang</div><h2 class="section-title">Pilih jeda yang kamu butuhkan.</h2>
+  <p class="muted">Setiap orang punya perjalanan dan cara bertumbuh yang berbeda.</p>
+  <div class="grid">
+    <article class="tile"><div class="emoji">◉</div><h3>Renungan</h3><p>Pertanyaan sederhana untuk melihat hidup dari sudut pandang yang berbeda.</p></article>
+    <article class="tile"><div class="emoji">✧</div><h3>Kata bijak</h3><p>Kalimat singkat yang bisa menemani langkah dan menguatkan niat baik.</p></article>
+    <article class="tile"><div class="emoji">⌁</div><h3>Ruang tenang</h3><p>Ambil napas, lepaskan sejenak kebisingan, dan hadir di saat ini.</p></article>
+  </div>
+</div></section>
+
+<section id="renungan"><div class="wrap reflection">
+  <div><div class="section-kicker">03 / catatan kecil</div><h2 class="section-title">Sebelum melanjutkan langkah…</h2><p class="muted">Coba jawab satu pertanyaan ini dengan jujur. Tidak ada jawaban benar atau salah.</p>
+    <div class="prompt-box"><strong id="prompt">Hal kecil apa yang patut kamu syukuri hari ini?</strong><p class="muted">Tuliskan untuk dirimu sendiri. Catatan tersimpan di perangkat ini.</p><textarea id="journal" placeholder="Hari ini aku menyadari bahwa..."></textarea><button class="primary" id="saveNote">Simpan catatan</button></div>
+  </div>
+  <aside class="letter"><div class="section-kicker">SEBUAH PENGINGAT</div><h2>Pelan bukan berarti tertinggal.</h2><p class="muted">Kamu tidak harus menyelesaikan semuanya hari ini. Lakukan yang bisa dilakukan, pelajari yang belum dipahami, dan beri ruang bagi dirimu untuk bertumbuh.</p><button class="small-btn" id="newPrompt">Pertanyaan refleksi ↻</button></aside>
+</div></section>
+</main>
+<footer><div class="wrap footer-row"><span><strong>SEJENAK.</strong> — Ruang untuk berhenti, berpikir, dan bertumbuh.</span><span>Dibuat dengan niat baik dan sedikit rasa ingin tahu. © <span id="year"></span></span></div></footer>
+<div class="toast" id="toast">Tersimpan.</div>
+<script>
+const quotes=[
+"“Langkah kecil yang kamu lakukan hari ini tetap berarti, meski belum terlihat hasilnya.”",
+"“Kamu boleh beristirahat tanpa harus menyerah pada tujuanmu.”",
+"“Tidak semua hal harus selesai hari ini. Yang penting, kamu tetap bergerak.”",
+"“Jangan ukur perjalananmu dengan kecepatan orang lain.”",
+"“Kesempatan untuk memulai lagi sering hadir dalam bentuk hari yang baru.”",
+"“Bertumbuh bukan tentang menjadi sempurna, melainkan terus belajar.”"
+];
+const prompts=[
+"Hal kecil apa yang patut kamu syukuri hari ini?",
+"Apa satu hal yang ingin kamu lakukan dengan lebih baik besok?",
+"Kapan terakhir kali kamu merasa benar-benar bangga pada usahamu?",
+"Apa yang sedang kamu pelajari dari proses yang kamu jalani?",
+"Siapa yang ingin kamu ucapkan terima kasih hari ini?"
+];
+const $=id=>document.getElementById(id);
+function toast(msg){$('toast').textContent=msg;$('toast').classList.add('show');setTimeout(()=>$('toast').classList.remove('show'),1800)}
+$('newQuote').onclick=()=>{$('quote').textContent=quotes[Math.floor(Math.random()*quotes.length)];$('author').textContent='— SEJENAK'};
+$('copyQuote').onclick=async()=>{try{await navigator.clipboard.writeText($('quote').textContent+' — SEJENAK');toast('Kutipan disalin.')}catch(e){toast('Salin kutipan tidak tersedia di browser ini.')}};
+$('newPrompt').onclick=()=>{$('prompt').textContent=prompts[Math.floor(Math.random()*prompts.length)]};
+$('saveNote').onclick=()=>{localStorage.setItem('sejenak-note',$('journal').value);toast('Catatan tersimpan di perangkat ini.')};
+$('journal').value=localStorage.getItem('sejenak-note')||'';
+$('themeBtn').onclick=()=>{document.body.classList.toggle('light');$('themeBtn').textContent=document.body.classList.contains('light')?'☀':'☾'};
+$('year').textContent=new Date().getFullYear();
+</script>
+</body></html>
