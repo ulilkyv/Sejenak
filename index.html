@@ -29,12 +29,25 @@ section{padding:76px 0}.section-kicker{color:var(--gold);text-transform:uppercas
 footer{padding:30px 0 45px;border-top:1px solid var(--line);color:var(--muted);font-size:.9rem}.footer-row{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
 .toast{position:fixed;bottom:22px;left:50%;transform:translate(-50%,20px);opacity:0;pointer-events:none;background:#f8e3bc;color:#182038;padding:11px 18px;border-radius:99px;font-weight:700;transition:.25s;z-index:10}.toast.show{opacity:1;transform:translate(-50%,0)}
 @media(max-width:760px){.links{display:none}.hero{min-height:690px;background-position:58% center}.hero-content{padding-top:120px}.daily{grid-template-columns:1fr}.grid{grid-template-columns:1fr}.reflection{grid-template-columns:1fr}.nav{height:66px}}
+
+.share-layout{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:20px;align-items:start;margin-top:26px}
+.share-card,.shared-card{border:1px solid var(--line);border-radius:22px;padding:23px;background:var(--panel);backdrop-filter:blur(12px)}
+.share-card label{display:block;font-weight:700;margin:12px 0 6px}
+.share-card input,.share-card textarea{display:block;width:100%;border:1px solid var(--line);border-radius:13px;padding:12px 14px;background:rgba(0,0,0,.12);color:var(--text);font:inherit;margin:0}
+.share-card textarea{min-height:120px}
+.share-card input:focus,.share-card textarea:focus{outline:2px solid var(--gold);outline-offset:2px}
+.form-help,.share-status{font-size:.9rem;color:var(--muted)}
+.share-status{min-height:1.5em;margin-top:12px}
+.quote-list{display:grid;gap:12px}
+.shared-card blockquote{font-size:1.08rem;margin:0 0 12px;white-space:pre-wrap;overflow-wrap:anywhere}
+.shared-author{color:var(--gold);font-weight:700;font-size:.9rem}
+@media(max-width:760px){.share-layout{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 <header><div class="wrap nav">
   <a class="brand" href="#"><span>✦</span>SEJENAK</a>
-  <nav class="links"><a href="#inspirasi">Inspirasi</a><a href="#ruang">Jelajahi</a><a href="#renungan">Renungan</a></nav>
+  <nav class="links"><a href="#inspirasi">Inspirasi</a><a href="#ruang">Jelajahi</a><a href="#berbagi">Ruang Berbagi</a><a href="#renungan">Renungan</a></nav>
   <div class="nav-actions"><button class="icon-btn" id="themeBtn" aria-label="Ganti tema">☾</button></div>
 </div></header>
 <main>
@@ -68,8 +81,32 @@ footer{padding:30px 0 45px;border-top:1px solid var(--line);color:var(--muted);f
   </div>
 </div></section>
 
+
+<section id="berbagi"><div class="wrap">
+  <div class="section-kicker">03 / suara dari pembaca</div>
+  <h2 class="section-title">Satu kalimat, banyak makna.</h2>
+  <p class="muted">Punya kalimat yang ingin dibagikan? Kirimkan ke SEJENAK. Kutipan akan diperiksa terlebih dahulu sebelum ditampilkan.</p>
+  <div class="share-layout">
+    <form class="share-card" id="shareForm">
+      <h3 style="margin-top:0">Bagikan kutipanmu</h3>
+      <p class="form-help">Gunakan nama samaran. Jangan tuliskan nomor telepon, alamat, atau informasi pribadi.</p>
+      <label for="shareAuthor">Nama samaran</label>
+      <input id="shareAuthor" name="author" maxlength="40" required placeholder="Contoh: Langit Senja" autocomplete="nickname">
+      <label for="shareContent">Kutipan</label>
+      <textarea id="shareContent" name="content" maxlength="500" required placeholder="Tuliskan kalimat yang ingin kamu bagikan..."></textarea>
+      <div class="form-help"><span id="charCount">0</span>/500 karakter</div>
+      <button class="primary" id="shareSubmit" type="submit">Kirim kutipan ↗</button>
+      <p class="share-status" id="shareStatus" role="status" aria-live="polite"></p>
+    </form>
+    <div>
+      <h3 style="margin:0 0 14px">Kutipan dari pembaca</h3>
+      <div class="quote-list" id="sharedQuotes"><p class="muted">Memuat kutipan...</p></div>
+    </div>
+  </div>
+</div></section>
+
 <section id="renungan"><div class="wrap reflection">
-  <div><div class="section-kicker">03 / catatan kecil</div><h2 class="section-title">Sebelum melanjutkan langkah…</h2><p class="muted">Coba jawab satu pertanyaan ini dengan jujur. Tidak ada jawaban benar atau salah.</p>
+  <div><div class="section-kicker">04 / catatan kecil</div><h2 class="section-title">Sebelum melanjutkan langkah…</h2><p class="muted">Coba jawab satu pertanyaan ini dengan jujur. Tidak ada jawaban benar atau salah.</p>
     <div class="prompt-box"><strong id="prompt">Hal kecil apa yang patut kamu syukuri hari ini?</strong><p class="muted">Tuliskan untuk dirimu sendiri. Catatan tersimpan di perangkat ini.</p><textarea id="journal" placeholder="Hari ini aku menyadari bahwa..."></textarea><button class="primary" id="saveNote">Simpan catatan</button></div>
   </div>
   <aside class="letter"><div class="section-kicker">SEBUAH PENGINGAT</div><h2>Pelan bukan berarti tertinggal.</h2><p class="muted">Kamu tidak harus menyelesaikan semuanya hari ini. Lakukan yang bisa dilakukan, pelajari yang belum dipahami, dan beri ruang bagi dirimu untuk bertumbuh.</p><button class="small-btn" id="newPrompt">Pertanyaan refleksi ↻</button></aside>
@@ -77,6 +114,7 @@ footer{padding:30px 0 45px;border-top:1px solid var(--line);color:var(--muted);f
 </main>
 <footer><div class="wrap footer-row"><span><strong>SEJENAK.</strong> — Ruang untuk berhenti, berpikir, dan bertumbuh.</span><span>Dibuat dengan niat baik dan sedikit rasa ingin tahu. © <span id="year"></span></span></div></footer>
 <div class="toast" id="toast">Tersimpan.</div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 const quotes=[
 "“Langkah kecil yang kamu lakukan hari ini tetap berarti, meski belum terlihat hasilnya.”",
@@ -102,5 +140,97 @@ $('saveNote').onclick=()=>{localStorage.setItem('sejenak-note',$('journal').valu
 $('journal').value=localStorage.getItem('sejenak-note')||'';
 $('themeBtn').onclick=()=>{document.body.classList.toggle('light');$('themeBtn').textContent=document.body.classList.contains('light')?'☀':'☾'};
 $('year').textContent=new Date().getFullYear();
+
+// Koneksi Supabase untuk fitur Ruang Berbagi.
+// Publishable key aman digunakan di browser selama RLS aktif dan policy membatasi akses.
+const SUPABASE_URL = "https://abifazuvxzsivtdygaog.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_ZfLirVby3kRRFiJIURJgrQ_xQ8ZrS_q";
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+
+const shareForm = $('shareForm');
+const shareAuthor = $('shareAuthor');
+const shareContent = $('shareContent');
+const shareStatus = $('shareStatus');
+const shareSubmit = $('shareSubmit');
+const sharedQuotes = $('sharedQuotes');
+const charCount = $('charCount');
+
+shareContent.addEventListener('input', () => {
+  charCount.textContent = shareContent.value.length;
+});
+
+function showSharedQuotes(rows) {
+  sharedQuotes.replaceChildren();
+  if (!rows || rows.length === 0) {
+    const empty = document.createElement('p');
+    empty.className = 'muted';
+    empty.textContent = 'Belum ada kutipan yang disetujui. Jadilah yang pertama berbagi!';
+    sharedQuotes.appendChild(empty);
+    return;
+  }
+  rows.forEach(row => {
+    const card = document.createElement('article');
+    card.className = 'shared-card';
+    const quote = document.createElement('blockquote');
+    quote.textContent = '“' + row.content + '”';
+    const author = document.createElement('div');
+    author.className = 'shared-author';
+    author.textContent = '— ' + row.author;
+    card.append(quote, author);
+    sharedQuotes.appendChild(card);
+  });
+}
+
+async function loadSharedQuotes() {
+  sharedQuotes.innerHTML = '<p class="muted">Memuat kutipan...</p>';
+  const { data, error } = await supabaseClient
+    .from('shared_quotes')
+    .select('id, author, content')
+    .eq('status', 'approved')
+    .order('id', { ascending: false })
+    .limit(30);
+
+  if (error) {
+    sharedQuotes.innerHTML = '<p class="muted">Kutipan belum dapat dimuat. Silakan coba lagi nanti.</p>';
+    console.error('Gagal memuat kutipan:', error.message);
+    return;
+  }
+  showSharedQuotes(data);
+}
+
+shareForm.addEventListener('submit', async (event) => {
+  event.preventDefault();
+  const author = shareAuthor.value.trim();
+  const content = shareContent.value.trim();
+
+  if (!author || author.length > 40 || !content || content.length > 500) {
+    shareStatus.textContent = 'Periksa kembali nama samaran dan kutipanmu.';
+    return;
+  }
+
+  shareSubmit.disabled = true;
+  shareSubmit.textContent = 'Mengirim...';
+  shareStatus.textContent = '';
+
+  const { error } = await supabaseClient
+    .from('shared_quotes')
+    .insert([{ author, content, status: 'pending' }]);
+
+  shareSubmit.disabled = false;
+  shareSubmit.textContent = 'Kirim kutipan ↗';
+
+  if (error) {
+    shareStatus.textContent = 'Kutipan belum berhasil dikirim. Coba lagi beberapa saat lagi.';
+    console.error('Gagal mengirim kutipan:', error.message);
+    return;
+  }
+
+  shareForm.reset();
+  charCount.textContent = '0';
+  shareStatus.textContent = 'Terima kasih! Kutipanmu sudah dikirim dan menunggu persetujuan.';
+});
+
+loadSharedQuotes();
+
 </script>
 </body></html>
