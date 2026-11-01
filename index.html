@@ -133,12 +133,67 @@ footer{padding:30px 0 45px;border-top:1px solid var(--line);color:var(--muted);f
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 const quotes=[
-"“Langkah kecil yang kamu lakukan hari ini tetap berarti, meski belum terlihat hasilnya.”",
-"“Kamu boleh beristirahat tanpa harus menyerah pada tujuanmu.”",
-"“Tidak semua hal harus selesai hari ini. Yang penting, kamu tetap bergerak.”",
-"“Jangan ukur perjalananmu dengan kecepatan orang lain.”",
-"“Kesempatan untuk memulai lagi sering hadir dalam bentuk hari yang baru.”",
-"“Bertumbuh bukan tentang menjadi sempurna, melainkan terus belajar.”"
+const quotes = [
+  // KEHIDUPAN DAN PERJALANAN
+  "Hidup bukan tentang siapa yang paling cepat sampai, melainkan siapa yang tetap berjalan meski berkali-kali kehilangan arah.",
+  "Tidak semua jalan yang berliku membawa kita tersesat; terkadang, justru di sanalah kita menemukan diri sendiri.",
+  "Kehidupan tidak selalu memberi apa yang kita inginkan, tetapi sering kali mengajarkan apa yang sebenarnya kita butuhkan.",
+  "Jangan terlalu sibuk mengejar hari esok hingga lupa menjalani hari ini.",
+  "Setiap orang memiliki waktunya sendiri. Tidak perlu membandingkan perjalananmu dengan perjalanan orang lain.",
+  "Ada hal-hal yang baru bisa dipahami setelah kita cukup jauh meninggalkannya.",
+  "Hidup adalah perjalanan panjang untuk mengenal dunia, sekaligus perjalanan pulang untuk mengenal diri sendiri.",
+  "Tidak semua kehilangan berarti kemunduran; beberapa di antaranya adalah cara kehidupan membuka jalan baru.",
+  "Kita tidak harus memahami seluruh perjalanan untuk berani mengambil langkah pertama.",
+  "Barangkali hidup memang bukan tentang menemukan jawaban, melainkan belajar berdamai dengan pertanyaan.",
+
+  // KEDEWASAAN DAN PEMIKIRAN
+  "Menjadi dewasa bukan berarti selalu benar, tetapi berani mengakui ketika diri sendiri keliru.",
+  "Semakin luas pikiran seseorang, semakin banyak hal yang ia sadari belum diketahuinya.",
+  "Tidak semua hal membutuhkan tanggapan; terkadang, diam adalah bentuk kebijaksanaan.",
+  "Orang yang benar-benar berilmu tidak sibuk terlihat pintar, tetapi sibuk memperbaiki pemahamannya.",
+  "Kedewasaan terlihat ketika seseorang mampu mengendalikan apa yang ingin dikatakan, bukan sekadar apa yang ingin dilakukan.",
+  "Jangan biarkan ego membuatmu kehilangan kesempatan untuk belajar dari orang lain.",
+  "Pikiran yang terbuka tidak mudah diisi kebencian.",
+  "Kebijaksanaan bukan tentang memiliki banyak jawaban, melainkan mengetahui pertanyaan mana yang perlu direnungkan.",
+  "Tidak semua perdebatan harus dimenangkan. Ada ketenangan yang lebih berharga daripada kemenangan.",
+  "Semakin seseorang mengenal dirinya, semakin sedikit ia merasa perlu menghakimi orang lain.",
+
+  // KESEDIHAN DAN KETEGARAN
+  "Tidak apa-apa jika hari ini terasa berat; bahkan langit pun tidak selalu cerah.",
+  "Ada kekuatan yang tumbuh diam-diam di balik seseorang yang memilih untuk tetap melangkah.",
+  "Jangan mengukur kekuatan seseorang dari seberapa sering ia tersenyum.",
+  "Beberapa luka tidak membutuhkan penjelasan panjang, hanya waktu dan ruang untuk pulih.",
+  "Terkadang, bertahan bukan berarti tidak lelah, melainkan tidak membiarkan kelelahan menentukan akhir perjalanan.",
+  "Kesedihan adalah bagian dari cerita, bukan keseluruhan kisah kehidupanmu.",
+  "Tidak semua yang terlihat tenang sedang baik-baik saja, dan tidak semua yang sedang berjuang terlihat lemah.",
+  "Ada hari ketika satu langkah kecil sudah menjadi pencapaian yang besar.",
+  "Jangan jadikan masa sulit sebagai alasan untuk meragukan seluruh masa depanmu.",
+  "Setelah melewati banyak hal, semoga kita tidak kehilangan kemampuan untuk berharap.",
+
+  // WAKTU DAN KESEMPATAN
+  "Waktu tidak pernah berjalan mundur, tetapi selalu memberi kesempatan untuk melangkah lebih baik.",
+  "Jangan menunggu kehilangan untuk menyadari betapa berharganya sesuatu yang selama ini dimiliki.",
+  "Hari yang biasa saja mungkin kelak menjadi kenangan yang paling dirindukan.",
+  "Kesempatan tidak selalu datang dua kali, tetapi pelajaran dari kesempatan yang terlewat bisa menemani kita selamanya.",
+  "Terlalu lama menunda kehidupan hanya akan membuat waktu berlalu tanpa cerita.",
+  "Masa lalu adalah tempat belajar, bukan tempat untuk menetap.",
+  "Kita sering menghitung hari yang tersisa, tetapi lupa menghargai hari yang sedang dijalani.",
+  "Tidak semua yang terlambat berarti gagal; terkadang, kita hanya sedang dipersiapkan dengan cara yang berbeda.",
+  "Waktu mengajarkan bahwa segala sesuatu memiliki musimnya sendiri.",
+  "Jangan habiskan seluruh waktumu untuk menyesali sesuatu yang tidak lagi bisa diubah.",
+
+  // KEIKHLASAN DAN RASA SYUKUR
+  "Ikhlas bukan berarti tidak menginginkan sesuatu, melainkan tetap lapang ketika kenyataan berkata berbeda.",
+  "Bersyukur bukan menunggu hidup sempurna, tetapi menemukan makna di tengah segala keterbatasan.",
+  "Tidak semua yang pergi perlu dikejar, dan tidak semua yang datang harus dimiliki.",
+  "Hati yang pandai bersyukur akan menemukan cukup di tengah banyaknya keinginan.",
+  "Terkadang, kebahagiaan bukan tentang mendapatkan lebih banyak, melainkan menginginkan lebih sedikit.",
+  "Belajarlah menerima bahwa tidak semua hal berada dalam kendalimu.",
+  "Jangan sampai sibuk menghitung apa yang belum dimiliki hingga lupa menghargai apa yang sudah ada.",
+  "Keikhlasan membuat kita berhenti memaksa dunia berjalan sesuai keinginan.",
+  "Ada ketenangan yang hadir ketika kita berhenti membandingkan pemberian kehidupan.",
+  "Semoga kita selalu memiliki hati yang lapang untuk menerima, pikiran yang jernih untuk memahami, dan keberanian untuk melanjutkan."
+];
 ];
 const prompts=[
 "Hal kecil apa yang patut kamu syukuri hari ini?",
