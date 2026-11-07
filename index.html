@@ -463,9 +463,6 @@ function showSharedQuotes(rows, reactionData) {
       makeReactionButton('Tidak suka', '👎', 'dislike', counts.dislike, selected, row.id)
     );
 
-    const note = document.createElement('p');
-    note.className = 'reaction-note';
-    note.textContent = 'Kamu bisa mengubah pilihan atau membatalkan reaksi kapan saja.';
 
     top.appendChild(author);
     card.append(top, quote, reactions, note);
