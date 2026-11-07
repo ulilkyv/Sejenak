@@ -387,13 +387,8 @@ const startJourney = document.getElementById('startJourney');
 const heroSection = document.querySelector('.hero');
 const roomSection = document.getElementById('ruang');
 
-const startJourney = document.getElementById('startJourney');
-
 startJourney.addEventListener('click', function(e) {
   e.preventDefault();
-
-  document.body.classList.add('journey-started');
-});
 
   heroSection.classList.add('hero-hidden');
   roomSection.classList.add('room-active');
