@@ -384,19 +384,11 @@ shareForm.addEventListener('submit', async (event) => {
 
 loadSharedQuotes();
 const startJourney = document.getElementById('startJourney');
-const heroSection = document.querySelector('.hero');
-const roomSection = document.getElementById('ruang');
 
 startJourney.addEventListener('click', function(e) {
   e.preventDefault();
 
-  heroSection.classList.add('hero-hidden');
-  roomSection.classList.add('room-active');
-
-  window.scrollTo({
-    top: 0,
-    behavior: 'smooth'
-  });
+  document.body.classList.add('journey-started');
 });
 </script>
 </body></html>
