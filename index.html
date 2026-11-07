@@ -99,56 +99,40 @@ footer{padding:30px 0 45px;border-top:1px solid var(--line);color:var(--muted);f
   align-self: center;
 }
 
-  /* TRANSISI ANTAR LAYAR SEJENAK */
+  
 
-.hero {
-  transition: transform 0.7s ease, opacity 0.7s ease;
-}
+/* SISTEM LAYAR TERPISAH */
+body { background: linear-gradient(rgba(4,13,30,.48),rgba(4,13,30,.68)),url('background-raja-ampat.jpg') center/cover fixed no-repeat; }
+.hero { background: linear-gradient(90deg,rgba(4,13,30,.72),rgba(4,13,30,.18)); }
+.screen { display:none; min-height:100vh; }
+.screen.active-screen { display:flex; }
+.hero.screen.active-screen { align-items:center; }
+.chooser-screen,.room-page { align-items:center; justify-content:center; padding:112px 0 60px; animation:screenIn .65s ease both; }
+.chooser-screen .wrap { text-align:center; }
+.room-page .back-to-rooms { margin-bottom:28px; }
+.room-heading { text-align:center; margin:0 auto 24px; }
+.room-page section { padding:28px 0; }
+.room-choice { color:var(--text); font:inherit; text-align:left; cursor:pointer; }
+.choice-link { display:inline-block; margin-top:18px; color:var(--gold); font-weight:800; }
+@keyframes screenIn { from {opacity:0;transform:translateY(28px)} to {opacity:1;transform:translateY(0)} }
+.calm-content { text-align:center; }
+.calm-card { max-width:720px; margin:30px auto 0; padding:38px 24px; border:1px solid var(--line); border-radius:26px; background:var(--panel); backdrop-filter:blur(16px); box-shadow:var(--shadow); }
+.calm-symbol { font-size:3rem; color:var(--gold); }
+.duration-options { display:flex; justify-content:center; gap:10px; flex-wrap:wrap; margin-top:24px; }
+.duration-btn.selected { background:linear-gradient(110deg,#ffe6b6,#b7ceff); color:#10182b; border-color:transparent; }
+.calm-note { color:var(--muted); margin-top:22px; }
+@media(max-width:760px) { .chooser-screen,.room-page {padding-top:92px} .room-page section {padding:18px 0} .calm-card {padding:28px 18px} }
 
-body.journey-started .hero {
-  transform: translateY(-100vh);
-  opacity: 0;
-  pointer-events: none;
-}
-
-#ruang {
-  display: block;
-  position: fixed;
-  inset: 0;
-  z-index: 20;
-  overflow-y: auto;
-  padding: 100px 24px 50px;
-  background: transparent;
-
-  transform: translateY(100vh);
-  opacity: 0;
-  visibility: hidden;
-
-  transition:
-    transform 0.7s ease,
-    opacity 0.7s ease,
-    visibility 0.7s;
-}
-
-body.journey-started #ruang {
-  transform: translateY(0);
-  opacity: 1;
-  visibility: visible;
-}
-
-#ruang .wrap {
-  text-align: center;
-}
 </style>
 </head>
 <body>
 <header><div class="wrap nav">
-  <a class="brand" href="#"><span>✦</span>SEJENAK</a>
-  <nav class="links"><a href="#inspirasi">Inspirasi</a><a href="#ruang">Jelajahi</a><a href="#berbagi">Ruang Berbagi</a><a href="#renungan">Renungan</a></nav>
+  <a class="brand" href="#" id="brandHome"><span>✦</span>SEJENAK</a>
+  <nav class="links"><a href="#" id="navHome">Beranda</a><a href="#ruang" id="navRooms">Pilih ruang</a></nav>
   <div class="nav-actions"><button class="icon-btn" id="themeBtn" aria-label="Ganti tema">☾</button></div>
 </div></header>
 <main>
-<section class="hero">
+<section class="hero screen active-screen" id="homeScreen">
   <div class="wrap hero-content">
     <div class="eyebrow">✧ Sebuah ruang untuk berhenti sejenak</div>
     <h1 class="shine">SEJENAK.</h1>
@@ -160,6 +144,30 @@ body.journey-started #ruang {
   </div>
 </section>
 
+
+
+<section id="ruang" class="screen chooser-screen"><div class="wrap">
+<div class="section-kicker">PILIH RUANGMU</div>
+<h2 class="section-title">Pilih jeda yang kamu butuhkan.</h2>
+<p class="muted">Setiap orang punya perjalanan dan cara bertumbuh yang berbeda.</p>
+<div class="grid">
+<button class="tile room-choice" type="button" data-open-room="renungan"><div class="emoji">◉</div><h3>Renungan</h3><p>Pertanyaan sederhana untuk melihat hidup dari sudut pandang berbeda.</p><span class="choice-link">Masuk ke ruang renungan ↗</span></button>
+<button class="tile room-choice" type="button" data-open-room="katabijak"><div class="emoji">✧</div><h3>Kata bijak</h3><p>Kalimat singkat yang bisa menemani langkah dan menguatkan niat baik.</p><span class="choice-link">Masuk ke kata bijak ↗</span></button>
+<button class="tile room-choice" type="button" data-open-room="tenang"><div class="emoji">⌁</div><h3>Ruang tenang</h3><p>Ambil napas, lepaskan sejenak kebisingan, dan hadir di saat ini.</p><span class="choice-link">Masuk ke ruang tenang ↗</span></button>
+</div></div></section>
+<section id="page-renungan" class="screen room-page"><div class="wrap">
+<button class="small-btn back-to-rooms" type="button">← Kembali ke pilihan ruang</button>
+<div class="room-heading"><div class="section-kicker">RUANG 01</div><h2 class="section-title">Renungan</h2><p class="muted">Berikan dirimu waktu untuk memahami apa yang sedang kamu jalani.</p></div>
+<section id="renungan"><div class="wrap reflection">
+  <div><div class="section-kicker">04 / catatan kecil</div><h2 class="section-title">Sebelum melanjutkan langkah…</h2><p class="muted">Coba jawab satu pertanyaan ini dengan jujur. Tidak ada jawaban benar atau salah.</p>
+    <div class="prompt-box"><strong id="prompt">Hal kecil apa yang patut kamu syukuri hari ini?</strong><p class="muted">Tuliskan untuk dirimu sendiri. Catatan tersimpan di perangkat ini.</p><textarea id="journal" placeholder="Hari ini aku menyadari bahwa..."></textarea><button class="primary" id="saveNote">Simpan catatan</button></div>
+  </div>
+  <aside class="letter"><div class="section-kicker">SEBUAH PENGINGAT</div><h2>Pelan bukan berarti tertinggal.</h2><p class="muted">Kamu tidak harus menyelesaikan semuanya hari ini. Lakukan yang bisa dilakukan, pelajari yang belum dipahami, dan beri ruang bagi dirimu untuk bertumbuh.</p><button class="small-btn" id="newPrompt">Pertanyaan refleksi ↻</button></aside>
+</div></section>
+</div></section>
+<section id="page-katabijak" class="screen room-page"><div class="wrap">
+<button class="small-btn back-to-rooms" type="button">← Kembali ke pilihan ruang</button>
+<div class="room-heading"><div class="section-kicker">RUANG 02</div><h2 class="section-title">Kata Bijak</h2><p class="muted">Temukan kalimat yang ingin kamu bawa dalam perjalanan hari ini.</p></div>
 <section id="inspirasi"><div class="wrap">
   <div class="section-kicker">01 / jeda hari ini</div>
   <h2 class="section-title">Satu menit untuk dirimu.</h2>
@@ -169,18 +177,6 @@ body.journey-started #ruang {
     <div style="display:flex;gap:9px;flex-wrap:wrap"><button class="small-btn" id="newQuote">Inspirasi lain ↻</button><button class="small-btn" id="copyQuote">Salin kutipan</button></div>
   </div>
 </div></section>
-
-<section id="ruang"><div class="wrap">
-  <div class="section-kicker">02 / jelajahi ruang</div><h2 class="section-title">Pilih jeda yang kamu butuhkan.</h2>
-  <p class="muted">Setiap orang punya perjalanan dan cara bertumbuh yang berbeda.</p>
-  <div class="grid">
-    <article class="tile"><div class="emoji">◉</div><h3>Renungan</h3><p>Pertanyaan sederhana untuk melihat hidup dari sudut pandang yang berbeda.</p></article>
-    <article class="tile"><div class="emoji">✧</div><h3>Kata bijak</h3><p>Kalimat singkat yang bisa menemani langkah dan menguatkan niat baik.</p></article>
-    <article class="tile"><div class="emoji">⌁</div><h3>Ruang tenang</h3><p>Ambil napas, lepaskan sejenak kebisingan, dan hadir di saat ini.</p></article>
-  </div>
-</div></section>
-
-
 <section id="berbagi"><div class="wrap">
   <div class="section-kicker">03 / suara dari pembaca</div>
   <h2 class="section-title">Satu kalimat, banyak makna.</h2>
@@ -203,15 +199,26 @@ body.journey-started #ruang {
     </div>
   </div>
 </div></section>
-
-<section id="renungan"><div class="wrap reflection">
-  <div><div class="section-kicker">04 / catatan kecil</div><h2 class="section-title">Sebelum melanjutkan langkah…</h2><p class="muted">Coba jawab satu pertanyaan ini dengan jujur. Tidak ada jawaban benar atau salah.</p>
-    <div class="prompt-box"><strong id="prompt">Hal kecil apa yang patut kamu syukuri hari ini?</strong><p class="muted">Tuliskan untuk dirimu sendiri. Catatan tersimpan di perangkat ini.</p><textarea id="journal" placeholder="Hari ini aku menyadari bahwa..."></textarea><button class="primary" id="saveNote">Simpan catatan</button></div>
-  </div>
-  <aside class="letter"><div class="section-kicker">SEBUAH PENGINGAT</div><h2>Pelan bukan berarti tertinggal.</h2><p class="muted">Kamu tidak harus menyelesaikan semuanya hari ini. Lakukan yang bisa dilakukan, pelajari yang belum dipahami, dan beri ruang bagi dirimu untuk bertumbuh.</p><button class="small-btn" id="newPrompt">Pertanyaan refleksi ↻</button></aside>
 </div></section>
+<section id="page-tenang" class="screen room-page"><div class="wrap calm-content">
+<button class="small-btn back-to-rooms" type="button">← Kembali ke pilihan ruang</button>
+<div class="room-heading"><div class="section-kicker">RUANG 03</div><h2 class="section-title">Ruang Tenang</h2><p class="muted">Tidak perlu terburu-buru. Beri dirimu jeda.</p></div>
+<div class="calm-card"><div class="calm-symbol">⌁</div><h3>Pilih jeda yang kamu inginkan.</h3><p class="muted">Pilih durasi untuk menikmati waktu tanpa terburu-buru.</p>
+<div class="duration-options">
+<button class="small-btn duration-btn" type="button" data-duration="1">1 menit</button>
+<button class="small-btn duration-btn" type="button" data-duration="3">3 menit</button>
+<button class="small-btn duration-btn" type="button" data-duration="5">5 menit</button>
+<button class="small-btn duration-btn" type="button" data-duration="10">10 menit</button>
+</div><p class="calm-note" id="calmMessage">Pilih durasi, lalu nikmati jedamu dengan tenang.</p></div>
+</div></section>
+
+
+
+
+
+
 </main>
-<footer><div class="wrap footer-row"><span><strong>SEJENAK.</strong> — Ruang untuk berhenti, berpikir, dan bertumbuh.</span><span>Dibuat dengan niat baik dan sedikit rasa ingin tahu. © <span id="year"></span></span></div></footer>
+<footer id="siteFooter"><div class="wrap footer-row"><span><strong>SEJENAK.</strong> — Ruang untuk berhenti, berpikir, dan bertumbuh.</span><span>Dibuat dengan niat baik dan sedikit rasa ingin tahu. © <span id="year"></span></span></div></footer>
 <div class="toast" id="toast">Tersimpan.</div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
@@ -383,12 +390,44 @@ shareForm.addEventListener('submit', async (event) => {
 });
 
 loadSharedQuotes();
-const startJourney = document.getElementById('startJourney');
+// Navigasi antar layar SEJENAK
+const screens = {
+  home: document.getElementById('homeScreen'),
+  chooser: document.getElementById('ruang'),
+  renungan: document.getElementById('page-renungan'),
+  katabijak: document.getElementById('page-katabijak'),
+  tenang: document.getElementById('page-tenang')
+};
+const siteFooter = document.getElementById('siteFooter');
 
-startJourney.addEventListener('click', function(e) {
+function showScreen(name) {
+  Object.values(screens).forEach(el => el.classList.remove('active-screen'));
+  screens[name].classList.add('active-screen');
+  siteFooter.style.display = name === 'home' ? 'none' : 'block';
+  window.scrollTo(0, 0);
+}
+
+document.getElementById('startJourney').addEventListener('click', e => {
   e.preventDefault();
-
-  document.body.classList.add('journey-started');
+  showScreen('chooser');
 });
+document.querySelectorAll('[data-open-room]').forEach(btn => {
+  btn.addEventListener('click', () => showScreen(btn.dataset.openRoom));
+});
+document.querySelectorAll('.back-to-rooms').forEach(btn => {
+  btn.addEventListener('click', () => showScreen('chooser'));
+});
+document.getElementById('navHome').addEventListener('click', e => { e.preventDefault(); showScreen('home'); });
+document.getElementById('brandHome').addEventListener('click', e => { e.preventDefault(); showScreen('home'); });
+document.getElementById('navRooms').addEventListener('click', e => { e.preventDefault(); showScreen('chooser'); });
+document.querySelectorAll('.duration-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.duration-btn').forEach(x => x.classList.remove('selected'));
+    btn.classList.add('selected');
+    document.getElementById('calmMessage').textContent =
+      `Kamu memilih jeda ${btn.dataset.duration} menit. Tarik napas perlahan, dan nikmati waktumu.`;
+  });
+});
+siteFooter.style.display = 'none';
 </script>
 </body></html>
