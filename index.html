@@ -25,7 +25,28 @@
 <style>
 :root{--bg:#071326;--panel:rgba(19,31,57,.72);--line:rgba(255,255,255,.15);--text:#f5f5ff;--muted:#c4c9da;--gold:#ffd99a;--blue:#a8c8ff;--shadow:0 20px 60px rgba(0,0,0,.25)}
 *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.6}
-body.light{--bg:#edf2fb;--panel:rgba(255,255,255,.78);--line:rgba(20,35,65,.14);--text:#17213a;--muted:#526079;--shadow:0 20px 60px rgba(40,60,100,.12)}
+body.light{
+  --bg:#f4f6fb;--panel:rgba(255,255,255,.94);--line:rgba(30,48,78,.16);
+  --text:#18243b;--muted:#52627a;--gold:#94621f;--blue:#315f98;
+  --shadow:0 16px 42px rgba(35,52,82,.10)
+}
+body.light section:not(.hero){background:linear-gradient(180deg,#f7f8fc,#eef2f8)}
+body.light .daily,body.light .tile,body.light .prompt-box,body.light .letter,
+body.light .share-card,body.light .shared-card,body.light .calm-card{
+  background:rgba(255,255,255,.94);border-color:rgba(35,55,85,.14);
+  box-shadow:0 10px 30px rgba(35,52,82,.07)
+}
+body.light .small-btn,body.light .shared-toggle,body.light .reaction-btn{
+  background:#f0f3f8;color:#24324b;border-color:#d5ddea
+}
+body.light .reaction-btn[aria-pressed="true"]{color:#704711;background:#fff1d8;border-color:#c99a4c}
+body.light textarea,body.light .share-card input,body.light .share-card textarea{
+  background:#fff;color:#18243b;border-color:#cbd5e3
+}
+body.light .shared-author{color:#81551b}
+body.light .section-kicker{color:#80551e}
+body.light .muted,body.light .form-help,body.light .share-status{color:#52627a}
+
 a{color:inherit;text-decoration:none}button{font:inherit;cursor:pointer}.wrap{width:min(1120px,92%);margin:auto}
 header{position:absolute;z-index:5;top:0;left:0;width:100%;border-bottom:1px solid rgba(255,255,255,.1)}
 .nav{height:76px;display:flex;align-items:center;justify-content:space-between;gap:20px}.brand{font-weight:850;letter-spacing:.16em;font-size:1.15rem}.brand span{color:var(--gold);font-size:1.5rem;margin-right:8px}
@@ -58,6 +79,20 @@ footer{padding:30px 0 45px;border-top:1px solid var(--line);color:var(--muted);f
 .shared-card blockquote{font-size:1.08rem;margin:0 0 12px;white-space:pre-wrap;overflow-wrap:anywhere}
 .shared-author{color:var(--gold);font-weight:700;font-size:.9rem}
 @media(max-width:760px){.share-layout{grid-template-columns:1fr}}
+.shared-card{position:relative}
+.shared-card .shared-quote-body[hidden]{display:none}
+.shared-card .shared-card-top{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.shared-card .shared-toggle{border:1px solid var(--line);background:rgba(255,255,255,.07);color:var(--text);padding:7px 12px;border-radius:99px;font-size:.85rem;white-space:nowrap}
+.shared-card .shared-toggle:hover,.reaction-btn:hover{border-color:var(--gold)}
+.shared-card blockquote{margin:12px 0}
+.shared-reactions{display:flex;gap:9px;flex-wrap:wrap;margin-top:16px}
+.reaction-btn{border:1px solid var(--line);background:rgba(255,255,255,.06);color:var(--text);border-radius:99px;padding:8px 12px;font-size:.88rem}
+.reaction-btn[aria-pressed="true"]{border-color:var(--gold);background:rgba(255,217,154,.16);color:var(--gold)}
+.reaction-btn:disabled{opacity:.55;cursor:wait}
+.reaction-count{font-variant-numeric:tabular-nums;font-weight:800;margin-left:4px}
+.reaction-note{font-size:.78rem;color:var(--muted);margin:8px 0 0}
+
+
 /* HERO: CENTERED LAYOUT */
 .hero {
   min-height: 100vh;
@@ -297,7 +332,15 @@ $('copyQuote').onclick=async()=>{try{await navigator.clipboard.writeText($('quot
 $('newPrompt').onclick=()=>{$('prompt').textContent=prompts[Math.floor(Math.random()*prompts.length)]};
 $('saveNote').onclick=()=>{localStorage.setItem('sejenak-note',$('journal').value);toast('Catatan tersimpan di perangkat ini.')};
 $('journal').value=localStorage.getItem('sejenak-note')||'';
-$('themeBtn').onclick=()=>{document.body.classList.toggle('light');$('themeBtn').textContent=document.body.classList.contains('light')?'☀':'☾'};
+const savedTheme = localStorage.getItem('sejenak-theme');
+if (savedTheme === 'light') document.body.classList.add('light');
+$('themeBtn').textContent = document.body.classList.contains('light') ? '☀' : '☾';
+$('themeBtn').onclick=()=>{
+  document.body.classList.toggle('light');
+  const isLight = document.body.classList.contains('light');
+  $('themeBtn').textContent = isLight ? '☀' : '☾';
+  localStorage.setItem('sejenak-theme', isLight ? 'light' : 'dark');
+};
 $('year').textContent=new Date().getFullYear();
 
 // Koneksi Supabase untuk fitur Ruang Berbagi.
@@ -318,7 +361,54 @@ shareContent.addEventListener('input', () => {
   charCount.textContent = shareContent.value.length;
 });
 
-function showSharedQuotes(rows) {
+// Identitas anonim di perangkat ini. Tidak meminta nama, email, atau akun.
+const voterStorageKey = 'sejenak-voter-id';
+let voterId = localStorage.getItem(voterStorageKey);
+if (!voterId) {
+  voterId = (crypto.randomUUID ? crypto.randomUUID() :
+    'xxxxxxxxyxxx4xxxyxxxyxxxxxxxxxxx'.replace(/[xy]/g, c => {
+      const r = Math.random() * 16 | 0;
+      return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+    }));
+  localStorage.setItem(voterStorageKey, voterId);
+}
+
+function makeReactionButton(label, emoji, type, count, selected, quoteId) {
+  const button = document.createElement('button');
+  button.type = 'button';
+  button.className = 'reaction-btn';
+  button.dataset.reaction = type;
+  button.dataset.quoteId = quoteId;
+  button.setAttribute('aria-pressed', selected === type ? 'true' : 'false');
+  button.innerHTML = `${emoji} ${label} <span class="reaction-count">${count}</span>`;
+  return button;
+}
+
+async function getReactionData(quoteIds) {
+  if (!quoteIds.length) return { counts: {}, mine: {} };
+  const { data, error } = await supabaseClient
+    .from('quote_reactions')
+    .select('quote_id, voter_id, reaction')
+    .in('quote_id', quoteIds);
+
+  if (error) {
+    console.error('Gagal memuat reaksi:', error.message);
+    return null;
+  }
+
+  const counts = {};
+  const mine = {};
+  quoteIds.forEach(id => counts[id] = { like: 0, dislike: 0 });
+  (data || []).forEach(item => {
+    if (!counts[item.quote_id]) counts[item.quote_id] = { like: 0, dislike: 0 };
+    if (item.reaction === 'like') counts[item.quote_id].like++;
+    if (item.reaction === 'dislike') counts[item.quote_id].dislike++;
+    if (item.voter_id === voterId) mine[item.quote_id] = item.reaction;
+  });
+  return { counts, mine };
+}
+
+function showSharedQuotes(rows, reactionData) {
   sharedQuotes.replaceChildren();
   if (!rows || rows.length === 0) {
     const empty = document.createElement('p');
@@ -327,15 +417,51 @@ function showSharedQuotes(rows) {
     sharedQuotes.appendChild(empty);
     return;
   }
+
   rows.forEach(row => {
     const card = document.createElement('article');
     card.className = 'shared-card';
-    const quote = document.createElement('blockquote');
-    quote.textContent = '“' + row.content + '”';
+
+    const top = document.createElement('div');
+    top.className = 'shared-card-top';
     const author = document.createElement('div');
     author.className = 'shared-author';
     author.textContent = '— ' + row.author;
-    card.append(quote, author);
+
+    const toggle = document.createElement('button');
+    toggle.type = 'button';
+    toggle.className = 'shared-toggle';
+    toggle.textContent = 'Sembunyikan';
+    toggle.setAttribute('aria-expanded', 'true');
+
+    const body = document.createElement('div');
+    body.className = 'shared-quote-body';
+    const quote = document.createElement('blockquote');
+    quote.textContent = '“' + row.content + '”';
+    body.appendChild(quote);
+
+    toggle.addEventListener('click', () => {
+      const willHide = !body.hidden;
+      body.hidden = willHide;
+      toggle.textContent = willHide ? 'Tampilkan kutipan' : 'Sembunyikan';
+      toggle.setAttribute('aria-expanded', String(!willHide));
+    });
+    top.append(author, toggle);
+
+    const reactions = document.createElement('div');
+    reactions.className = 'shared-reactions';
+    const counts = reactionData?.counts?.[row.id] || { like: 0, dislike: 0 };
+    const selected = reactionData?.mine?.[row.id] || null;
+    reactions.append(
+      makeReactionButton('Suka', '👍', 'like', counts.like, selected, row.id),
+      makeReactionButton('Tidak suka', '👎', 'dislike', counts.dislike, selected, row.id)
+    );
+
+    const note = document.createElement('p');
+    note.className = 'reaction-note';
+    note.textContent = 'Kamu bisa mengubah pilihan atau membatalkan reaksi kapan saja.';
+
+    card.append(top, body, reactions, note);
     sharedQuotes.appendChild(card);
   });
 }
@@ -354,8 +480,51 @@ async function loadSharedQuotes() {
     console.error('Gagal memuat kutipan:', error.message);
     return;
   }
-  showSharedQuotes(data);
+
+  const reactionData = await getReactionData((data || []).map(row => row.id));
+  showSharedQuotes(data, reactionData);
 }
+
+// Satu pilihan aktif per kutipan: klik lagi untuk batal, klik lawan untuk mengganti.
+sharedQuotes.addEventListener('click', async event => {
+  const button = event.target.closest('button[data-reaction]');
+  if (!button || button.disabled) return;
+
+  const quoteId = Number(button.dataset.quoteId);
+  const reaction = button.dataset.reaction;
+  const card = button.closest('.shared-card');
+  const current = card.querySelector(`button[data-reaction="like"]`).getAttribute('aria-pressed') === 'true'
+    ? 'like'
+    : (card.querySelector(`button[data-reaction="dislike"]`).getAttribute('aria-pressed') === 'true' ? 'dislike' : null);
+
+  card.querySelectorAll('.reaction-btn').forEach(b => b.disabled = true);
+
+  let result;
+  if (current === reaction) {
+    result = await supabaseClient
+      .from('quote_reactions')
+      .delete()
+      .eq('quote_id', quoteId)
+      .eq('voter_id', voterId);
+  } else if (current) {
+    result = await supabaseClient
+      .from('quote_reactions')
+      .update({ reaction })
+      .eq('quote_id', quoteId)
+      .eq('voter_id', voterId);
+  } else {
+    result = await supabaseClient
+      .from('quote_reactions')
+      .insert([{ quote_id: quoteId, voter_id: voterId, reaction }]);
+  }
+
+  if (result.error) {
+    console.error('Gagal menyimpan reaksi:', result.error.message);
+    toast('Reaksi belum berhasil disimpan. Periksa pengaturan Supabase.');
+  }
+  await loadSharedQuotes();
+});
+
 
 shareForm.addEventListener('submit', async (event) => {
   event.preventDefault();
