@@ -79,7 +79,7 @@ footer{padding:30px 0 45px;border-top:1px solid var(--line);color:var(--muted);f
 .shared-card blockquote{font-size:1.08rem;margin:0 0 12px;white-space:pre-wrap;overflow-wrap:anywhere}
 .shared-author{color:var(--gold);font-weight:700;font-size:.9rem}
 @media(max-width:760px){.share-layout{grid-template-columns:1fr}}
-.shared-card{position:relative}
+.shared-card{position:relative}.shared-card-details[hidden]{display:none!important}
 .shared-card .shared-quote-body[hidden]{display:none}
 .shared-card .shared-card-top{display:flex;justify-content:space-between;align-items:center;gap:12px}
 .shared-card .shared-toggle{border:1px solid var(--line);background:rgba(255,255,255,.07);color:var(--text);padding:7px 12px;border-radius:99px;font-size:.85rem;white-space:nowrap}
@@ -158,6 +158,20 @@ body { background: linear-gradient(rgba(4,13,30,.48),rgba(4,13,30,.68)),url('bac
 .calm-note { color:var(--muted); margin-top:22px; }
 @media(max-width:760px) { .chooser-screen,.room-page {padding-top:92px} .room-page section {padding:18px 0} .calm-card {padding:28px 18px} }
 
+.quote-list-scroll{max-height:520px;overflow-y:auto;overscroll-behavior:contain;padding:4px 10px 10px 4px;scrollbar-width:thin}
+.quote-list-scroll::-webkit-scrollbar{width:8px}
+.quote-list-scroll::-webkit-scrollbar-thumb{background:rgba(130,145,170,.55);border-radius:20px}
+.quote-list-scroll::-webkit-scrollbar-track{background:rgba(130,145,170,.12);border-radius:20px}
+#toggleQuoteList{margin:0 0 12px}
+#sharedQuotes[hidden]{display:none!important}
+@media(max-width:760px){.quote-list-scroll{max-height:440px}}
+
+body.light .hero{
+  background:linear-gradient(90deg,rgba(4,13,30,.88),rgba(4,13,30,.25)),url('background-raja-ampat.jpg') center/cover no-repeat;
+}
+body.light .hero:after{background:linear-gradient(0deg,#071326,transparent 36%)}
+body.light .hero .eyebrow{color:#e7eaff}
+body.light .hero .lead{color:#f0f2fa}
 </style>
 </head>
 <body>
@@ -230,7 +244,8 @@ body { background: linear-gradient(rgba(4,13,30,.48),rgba(4,13,30,.68)),url('bac
     </form>
     <div>
       <h3 style="margin:0 0 14px">Kutipan dari pembaca</h3>
-      <div class="quote-list" id="sharedQuotes"><p class="muted">Memuat kutipan...</p></div>
+      <button class="small-btn" id="toggleQuoteList" type="button" aria-expanded="true">Sembunyikan daftar kutipan</button>
+      <div class="quote-list quote-list-scroll" id="sharedQuotes"><p class="muted">Memuat kutipan...</p></div>
     </div>
   </div>
 </div></section>
@@ -355,6 +370,14 @@ const shareContent = $('shareContent');
 const shareStatus = $('shareStatus');
 const shareSubmit = $('shareSubmit');
 const sharedQuotes = $('sharedQuotes');
+const toggleQuoteList = $('toggleQuoteList');
+toggleQuoteList.addEventListener('click', () => {
+  const willHide = !sharedQuotes.hidden;
+  sharedQuotes.hidden = willHide;
+  toggleQuoteList.textContent = willHide ? 'Tampilkan daftar kutipan' : 'Sembunyikan daftar kutipan';
+  toggleQuoteList.setAttribute('aria-expanded', String(!willHide));
+});
+
 const charCount = $('charCount');
 
 shareContent.addEventListener('input', () => {
@@ -428,25 +451,8 @@ function showSharedQuotes(rows, reactionData) {
     author.className = 'shared-author';
     author.textContent = '— ' + row.author;
 
-    const toggle = document.createElement('button');
-    toggle.type = 'button';
-    toggle.className = 'shared-toggle';
-    toggle.textContent = 'Sembunyikan';
-    toggle.setAttribute('aria-expanded', 'true');
-
-    const body = document.createElement('div');
-    body.className = 'shared-quote-body';
     const quote = document.createElement('blockquote');
     quote.textContent = '“' + row.content + '”';
-    body.appendChild(quote);
-
-    toggle.addEventListener('click', () => {
-      const willHide = !body.hidden;
-      body.hidden = willHide;
-      toggle.textContent = willHide ? 'Tampilkan kutipan' : 'Sembunyikan';
-      toggle.setAttribute('aria-expanded', String(!willHide));
-    });
-    top.append(author, toggle);
 
     const reactions = document.createElement('div');
     reactions.className = 'shared-reactions';
@@ -461,7 +467,8 @@ function showSharedQuotes(rows, reactionData) {
     note.className = 'reaction-note';
     note.textContent = 'Kamu bisa mengubah pilihan atau membatalkan reaksi kapan saja.';
 
-    card.append(top, body, reactions, note);
+    top.appendChild(author);
+    card.append(top, quote, reactions, note);
     sharedQuotes.appendChild(card);
   });
 }
